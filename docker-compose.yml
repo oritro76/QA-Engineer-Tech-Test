@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  pytest:
+    build: .
+    command: pytest -n auto
+    volumes:
+      - ./logs:/app/logs:rw  
+      - ./reports:/app/reports:rw 
+
+
+  
+
+    
