@@ -6,7 +6,7 @@ class TestDeletePosts:
     post = Posts()
 
     @pytest.mark.smoke
-    def test_delete_post_success(self):
+    def test_delete_post_success(self, use_mock_server):
         """Test that DELETE /posts/:id deletes a post"""
         post_id = self.post.get_random_post_id()
         status_code = self.post.delete_post(post_id)

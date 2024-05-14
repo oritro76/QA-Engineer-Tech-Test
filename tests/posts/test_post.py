@@ -7,7 +7,7 @@ class TestPostPosts():
     post = Posts()
 
     @pytest.mark.smoke
-    def test_create_post_success(self, random_post_data):
+    def test_create_post_success(self, random_post_data, use_mock_server):
         """Test that POST /posts creates a new post"""
         new_post = random_post_data
         created_post = self.post.create_post(new_post)

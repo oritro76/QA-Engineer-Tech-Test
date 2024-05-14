@@ -10,7 +10,7 @@ class TestGetPosts:
     post = Posts() 
 
     @pytest.mark.smoke
-    def test_get_all_posts(self):
+    def test_get_all_posts(self, use_mock_server):
         """Test that GET /posts returns a list of posts"""
         posts = self.post.get_all_posts()
         assert isinstance(posts, list)
@@ -28,7 +28,10 @@ class TestGetPosts:
         """Test that GET /posts supports pagination"""
         # Test with limit of 2 posts
         post_limit=2
-        response = http_api_client.get(f"{self.post.URL}?_limit={post_limit}")
+        params = {
+            "_limit": post_limit
+        }
+        response = http_api_client.get(f"{self.post.URL}", params=params)
         response.raise_for_status()
         data = response.json()
         assert len(data) == post_limit, f"with Limit {post_limit} expected {len(data)}"
@@ -37,13 +40,16 @@ class TestGetPosts:
     def test_get_all_posts_with_pagination(self):
         # Test with specific page number
         page_num = 2
-        response = http_api_client.get(f"{self.post.URL}?_page={page_num}")
+        params = {
+            "_page": page_num
+        }
+        response = http_api_client.get(f"{self.post.URL}", params=params)
         response.raise_for_status()
         data = response.json()
         assert len(data) > 0, f"should have data for pagination when page_num is {page_num}"
 
     @pytest.mark.smoke
-    def test_get_post_by_id_success(self):
+    def test_get_post_by_id_success(self, use_mock_server):
         """Test that GET /posts/:id returns a post"""
         post_id = self.post.get_random_post_id()
         post = self.post.get_post_by_id(post_id)

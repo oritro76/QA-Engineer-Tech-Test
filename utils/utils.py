@@ -1,4 +1,6 @@
 from loguru import logger
+from dotenv import find_dotenv, load_dotenv
+
 
 def log_request(response, *args, **kwargs):
     """
@@ -18,3 +20,4 @@ def log_response(response, *args, **kwargs):
     logger.debug(f"Response Status Code: {response.status_code}")
     logger.debug(f"Response Headers: {response.headers}")
     logger.debug(f"Response Body: {response.text}")
+
