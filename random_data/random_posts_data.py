@@ -1,29 +1,28 @@
+from typing import List, Dict, Optional
+
 from random_data.random_data import RandomData
 
 
 class PostsData:
-    def __init__(self, num_of_posts=100):
-        self.posts = RandomData().create_random_posts(num_of_posts)
+    def __init__(self, num_of_posts: int = 100) -> None:
+        self.posts: List[Dict] = RandomData().create_random_posts(num_of_posts)
 
-    def get_all_posts(self):
+    def get_all_posts(self) -> List[Dict]:
         return self.posts
 
-    def get_post_by_id(self, post_id):
+    def get_post_by_id(self, post_id: int) -> Optional[Dict]:
         try:
             return next(post for post in self.posts if post["id"] == post_id)
         except StopIteration:
             return None
 
-    def add_post(self, post):
-        new_post = {}
-        new_post["id"] = len(self.posts) + 1
-        new_post["userId"] = post["userId"]
-        new_post["title"] = post["title"]
-        new_post["body"] = post["body"]        
+    def add_post(self, post: Dict) -> Dict:
+        new_post: Dict = {"id": len(self.posts) + 1}
+        new_post.update(post)  # Update with user-provided data
         self.posts.append(new_post)
         return new_post
 
-    def update_post(self, post_id, updated_post):
+    def update_post(self, post_id: int, updated_post: Dict) -> Optional[Dict]:
         try:
             post_index = next(
                 index for index, post in enumerate(self.posts) if post["id"] == post_id
@@ -37,7 +36,7 @@ class PostsData:
         except StopIteration:
             return None
 
-    def delete_post(self, post_id):
+    def delete_post(self, post_id: int) -> bool:
         try:
             post_index = next(
                 index for index, post in enumerate(self.posts) if post["id"] == post_id

@@ -4,12 +4,17 @@ import pytest
 from _pytest.logging import caplog as _caplog
 import logging
 import os
+from pytest_metadata.plugin import metadata_key
+from settings import BASE_URL
 
 from mock_server.mock_server import MockServer
 from settings import load_env_variables
 
 load_env_variables()
-print(os.environ)
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_sessionfinish(session, exitstatus):
+    session.config.stash[metadata_key]["BASE URL"] = BASE_URL
 
 @pytest.fixture
 def caplog(_caplog):
