@@ -23,7 +23,7 @@ class RandomData:
 
     def create_random_posts(self, count=100) -> dict:
         posts = []
-        for id in range(count):
+        for id in range(1, count+1):
             posts.append({
                 "title": self.random_post_title(),
                 "body": self.random_post_body(),
