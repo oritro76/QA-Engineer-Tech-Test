@@ -5,6 +5,11 @@ from _pytest.logging import caplog as _caplog
 import logging
 import os
 
+from mock_server.mock_server import MockServer
+from settings import load_env_variables
+
+load_env_variables()
+print(os.environ)
 
 @pytest.fixture
 def caplog(_caplog):
@@ -44,3 +49,18 @@ def write_logs(request):
     logger.remove()
     logger.configure(handlers=[{"sink": log_path, "level": "TRACE", "mode": "w"}])
     logger.enable("my_package")
+
+@pytest.fixture(scope="session")
+def use_mock_server():
+    if os.environ.get("MOCK_SERVER") == "1":
+        """
+        Fixture to run Flask app in a separate thread for parallel testing.
+        """
+        server = MockServer(os.environ.get("MOCK_SERVER_PORT", 5050))
+        server.start()
+        yield server
+        server.stop()
+
+    else:
+        logger.debug("Starting the test for prod server")
+        yield None
