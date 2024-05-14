@@ -3,7 +3,7 @@ version: '3.8'
 services:
   pytest:
     build: .
-    command: pytest
+    command: python runner.py
     volumes:
       - ./logs:/app/logs:rw  
       - ./reports:/app/reports:rw 
