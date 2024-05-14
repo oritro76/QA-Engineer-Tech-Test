@@ -14,8 +14,12 @@ class PostsData:
         except StopIteration:
             return None
 
-    def add_post(self, new_post):
+    def add_post(self, post):
+        new_post = {}
         new_post["id"] = len(self.posts) + 1
+        new_post["userId"] = post["userId"]
+        new_post["title"] = post["title"]
+        new_post["body"] = post["body"]        
         self.posts.append(new_post)
         return new_post
 
