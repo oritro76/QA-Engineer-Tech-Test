@@ -14,7 +14,7 @@ class MockServer:
         self.port = int(port)
         self.app = Flask(__name__)
         self.server = make_server('localhost', self.port, self.app)
-        self.url = "http://localhost:%s" % self.port
+        self.url = f"http://localhost:{self.port}" 
         self.thread = None
 
         @self.app.route('/alive', methods=['GET'])
@@ -75,12 +75,14 @@ class MockServer:
             Returns the created post object (JSON) on success.
             400 error on invalid data.
             """
-            try:
-                data = request.get_json()
-                new_post = posts_data.add_post(data)
+            
+            data = request.get_json()
+            new_post = posts_data.add_post(data)
+
+            if new_post:
                 return jsonify(new_post), 200
-            except (KeyError, ValueError):
-                return jsonify({"error": "Invalid data"}), 400
+            else:
+                return jsonify(), 400
 
         @self.app.route("/posts/<int:post_id>", methods=["PUT"])
         def update_post(post_id):
@@ -95,9 +97,9 @@ class MockServer:
                 if updated_post:
                     return jsonify(updated_post)
                 else:
-                    return jsonify({"error": "Post not found"}), 404
+                    return jsonify(), 404
             except (KeyError, ValueError):
-                return jsonify({"error": "Invalid data"}), 400
+                return jsonify(), 400
 
         @self.app.route("/posts/<int:post_id>", methods=["DELETE"])
         def delete_post(post_id):
@@ -109,13 +111,6 @@ class MockServer:
             posts_data.delete_post(post_id)
             return "", 200
 
-        @self.app.route("/reset", methods=["POST"])
-        def reset_data():
-            """
-            Resets the internal post data to an empty list.
-            """
-            posts_data.reset_data()
-            return "", 200
 
     def start(self):
         self.thread = Thread(target=self.server.serve_forever, daemon=True)

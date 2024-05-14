@@ -16,11 +16,13 @@ class PostsData:
         except StopIteration:
             return None
 
-    def add_post(self, post: Dict) -> Dict:
+    def add_post(self, post: Dict) -> Optional[Dict]:
         new_post: Dict = {"id": len(self.posts) + 1}
-        new_post.update(post)  # Update with user-provided data
-        self.posts.append(new_post)
-        return new_post
+        if "userId" in post and "title" in post and "body" in post:
+            new_post.update(post)  # Update with user-provided data
+            self.posts.append(new_post)
+            return new_post
+        return None
 
     def update_post(self, post_id: int, updated_post: Dict) -> Optional[Dict]:
         try:

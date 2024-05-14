@@ -1,6 +1,6 @@
 import pytest
 from requests import codes as https_status_codes, RequestException
-from apis.json_placeholder_posts import Posts
+from api_wrappers.json_placeholder_posts import Posts
 
 class TestDeletePosts:
     post = Posts()

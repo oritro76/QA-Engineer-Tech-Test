@@ -1,7 +1,7 @@
 import pytest
 from requests.exceptions import RequestException
 from requests import codes as https_status_codes
-from apis.json_placeholder_posts import Posts
+from api_wrappers.json_placeholder_posts import Posts
 
 class TestPutPosts:
     posts = Posts()
