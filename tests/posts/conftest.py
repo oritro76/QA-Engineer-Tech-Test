@@ -1,4 +1,5 @@
 import pytest
+import random
 from random_data.random_data import RandomData
 
 random_data = RandomData()
@@ -10,7 +11,7 @@ def random_post_data() -> dict:
   return {
       "title": random_data.random_post_title(),
       "body": random_data.random_post_body(),
-      "userId": 1,  # Replace with a valid user ID if needed
+      "userId": random.randint(1, 100)
   }
 
 @pytest.fixture
